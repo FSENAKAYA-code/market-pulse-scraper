@@ -35,9 +35,11 @@ def fit_price_baseline(
     X_train, X_val, X_test, y_train, y_val, y_test = chronological_split(X, y)
     model = HistGradientBoostingRegressor(random_state=random_state)
     model.fit(X_train, y_train)
+    train_mae = mean_absolute_error(y_train, model.predict(X_train))
     validation_mae = mean_absolute_error(y_val, model.predict(X_val))
     model.fit(np.concatenate([X_train, X_val]), np.concatenate([y_train, y_val]))
     return {
-        "validation_mae": float(validation_mae),
+        "train_loss_mae": float(train_mae),
+        "validation_loss_mae": float(validation_mae),
         "test_mae": float(mean_absolute_error(y_test, model.predict(X_test))),
     }

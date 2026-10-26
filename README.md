@@ -28,6 +28,13 @@ The demo uses generated toy data only. Replace it with data you are allowed to u
 - Fit preprocessing steps on training data only. Use validation results for model selection; report the test result once for the chosen configuration.
 - Check the project's `src/market/` code and tests before adapting it to real data.
 
+## Domain workflow
+
+- Static HTTPX/Requests and asynchronous HTTPX adapters require HTTPS and an explicit hostname allowlist and refuse redirects. Optional Selenium is limited to trusted allowlisted sites and checks the final browser host. The FastAPI service reads its allowlist from `MARKET_ALLOWED_HOSTS` (comma-separated hostnames).
+- Check each site's terms and robots policy before collection. The project does not bypass access controls or crawl automatically. API requests are one-page extraction requests. Treat the Selenium helper as a local learning adapter, not a hardened browser sandbox.
+- Convert authorized observations into a timestamped CSV with a `next_price` target for `uv run python scripts/train.py --data-csv PATH`. Evaluation is chronological 60/20/20. The bounded pricing heuristic only returns a reference value; it does not change listings.
+- Run the local API with `MARKET_ALLOWED_HOSTS=example.org uv run python scripts/serve.py`.
+
 ## Repository layout
 
 ```text

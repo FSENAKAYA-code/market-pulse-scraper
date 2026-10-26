@@ -29,3 +29,22 @@ def suggest_price(
     floor = unit_cost * (1 + minimum_margin)
     ceiling = unit_cost * (1 + maximum_margin)
     return float(min(max(median(values), floor), ceiling))
+
+
+def elasticity_reference_price(
+    *,
+    unit_cost: float,
+    price_elasticity: float,
+    minimum_margin: float = 0.1,
+    maximum_margin: float = 0.5,
+) -> float:
+    """Calculate a bounded constant-elasticity reference price, not an action."""
+    elasticity = abs(float(price_elasticity))
+    if unit_cost <= 0 or elasticity <= 1:
+        raise ValueError("unit_cost must be positive and absolute elasticity greater than one")
+    if not 0 <= minimum_margin <= maximum_margin:
+        raise ValueError("margins must be ordered in [0, 1]")
+    monopoly_reference = unit_cost * elasticity / (elasticity - 1)
+    floor = unit_cost * (1 + minimum_margin)
+    ceiling = unit_cost * (1 + maximum_margin)
+    return float(min(max(monopoly_reference, floor), ceiling))

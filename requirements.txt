@@ -1,5 +1,9 @@
 beautifulsoup4>=4.12
+fastapi>=0.110
 httpx>=0.27
 numpy>=1.26
 pandas>=2.2
+requests>=2.31
 scikit-learn>=1.4
+selenium>=4.18
+uvicorn>=0.27
