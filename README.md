@@ -24,7 +24,7 @@ The demo uses generated toy data only. Replace it with data you are allowed to u
 ## Data and evaluation
 
 - Expected input: Public pages whose terms permit collection, or a user-supplied CSV.
-- The baseline separates training, validation, and test partitions with a fixed seed. The test partition is held out until final evaluation.
+- The pricing model keeps rows in timestamp order and uses the earliest 60% for training, the next 20% for validation, and the latest 20% for final testing. It does not shuffle future prices into the past. Its reference-price function enforces explicit cost and margin bounds and does not alter listings.
 - Fit preprocessing steps on training data only. Use validation results for model selection; report the test result once for the chosen configuration.
 - Check the project's `src/market/` code and tests before adapting it to real data.
 
